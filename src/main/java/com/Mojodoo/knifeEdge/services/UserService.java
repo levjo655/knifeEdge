@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -22,11 +22,25 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+
+    public User getUserById(String id) {
+        try {
+            return userRepository.findById(id).get();
+        } catch (NoSuchElementException exception) {
+            System.out.println("Could not find the requested user");
+            throw exception;
+        }
     }
 
-    public boolean userExists(String username) {
-        return userRepository.existsByUsername(username);
+
+    public User updateUser(User user){
+        return userRepository.save(user);
     }
+
+    public String deleteUser(String id) {
+        userRepository.deleteById(id);
+        return "User deleted";
+    }
+
+
 }
