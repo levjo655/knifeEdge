@@ -11,7 +11,6 @@ public class Knife {
     private String type;
     private String length;
 
-    // Default constructor
     public Knife() {
     }
 
