@@ -42,4 +42,9 @@ public class RecipeController {
     public Recipe updateRecipe(@RequestBody Recipe recipe) {
         return recipeService.updateRecipe(recipe);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public String deleteRecipe(@PathVariable String id) {
+        return recipeService.deleteRecipe(id);
+    }
 }
