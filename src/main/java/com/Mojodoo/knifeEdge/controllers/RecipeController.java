@@ -47,4 +47,9 @@ public class RecipeController {
     public String deleteRecipe(@PathVariable String id) {
         return recipeService.deleteRecipe(id);
     }
+
+    @PostMapping("/suggest")
+    public List<Recipe> suggestRecipes(@RequestBody List<String> ingredients) {
+        return recipeService.suggestRecipesBasedOnIngredients(ingredients);
+    }
 }

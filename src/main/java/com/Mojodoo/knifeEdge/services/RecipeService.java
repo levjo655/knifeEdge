@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -47,6 +48,23 @@ public class RecipeService {
     public String deleteRecipe(String id) {
         recipeRepository.deleteById(id);
         return "Recipe deleted";
+    }
+    public List<Recipe> suggestRecipesBasedOnIngredients(List<String> userIngredients) {
+        List<Recipe> allRecipes = recipeRepository.findAll();
+
+        return allRecipes.stream()
+                .filter(recipe ->hasMatchingIngredients(recipe, userIngredients))
+                .sorted((r1, r2) -> countMatchingIngredients(r2, userIngredients) - countMatchingIngredients(r1, userIngredients))
+                .collect(Collectors.toList());
+    }
+    private Boolean hasMatchingIngredients(Recipe recipe, List<String> userIngredients) {
+        return recipe.getIngredients().stream()
+                .anyMatch(ingredient -> userIngredients.contains(ingredient.getName()));
+    }
+    private Integer countMatchingIngredients(Recipe recipe, List<String> userIngredients) {
+        return (int) recipe.getIngredients().stream()
+                .filter(ingredient -> userIngredients.contains(ingredient.getName()))
+                .count();
     }
 
 
