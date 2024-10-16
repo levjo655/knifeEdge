@@ -13,6 +13,7 @@ const Header = () => {
             <li className="hover:text-gray-700 cursor-pointer">Home</li>
             <li className="hover:text-gray-700 cursor-pointer">Profile</li>
             <li className="hover:text-gray-700 cursor-pointer">Recepies</li>
+            <li className="hover:text-gray-700 cursor-pointer">My knives</li>
             <li className="hover:text-gray-700 cursor-pointer">About</li>
           </ul>
         </nav>
