@@ -17,7 +17,7 @@ const App = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     defaultValues: {
-      email: "test@email.com",
+      email: "",
     },
     resolver: zodResolver(schema),
   });
@@ -34,21 +34,58 @@ const App = () => {
   };
 
   return (
-    <form className="userInput" onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("email")} type="text" placeholder="Email" />
-      {errors.email && (
-        <div className="text-red-500">{errors.email.message}</div>
-      )}
-      <input {...register("password")} type="password" placeholder="Password" />
-      {errors.password && (
-        <div className="text-red-500">{errors.password.message}</div>
-      )}
-      <button disabled={isSubmitting} type="submit">
+    <div className="flex items-center justify-center min-h-screen bg-black-100">
+    <form
+      className="bg-white p-8 rounded shadow-md w-full max-w-md"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+
+      {/* Email input */}
+      <div className="mb-4">
+        <input
+          {...register("email")}
+          type="text"
+          placeholder="Email"
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+        {errors.email && (
+          <div className="text-red-500 mt-1">{errors.email.message}</div>
+        )}
+      </div>
+
+      {/* Password input */}
+      <div className="mb-4">
+        <input
+          {...register("password")}
+          type="password"
+          placeholder="Password"
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+        {errors.password && (
+          <div className="text-red-500 mt-1">{errors.password.message}</div>
+        )}
+      </div>
+
+      {/* Submit button */}
+      <button
+        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+        disabled={isSubmitting}
+        type="submit"
+      >
         {isSubmitting ? "Loading..." : "Submit"}
       </button>
-      {errors.root && <div className="text-red-500">{errors.root.message}</div>}
+
+      {/* Root error */}
+      {errors.root && (
+        <div className="text-red-500 mt-4 text-center">
+          {errors.root.message}
+        </div>
+      )}
     </form>
-  );
+  </div>
+);
 };
+
 
 export default App;
