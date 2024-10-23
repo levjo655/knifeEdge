@@ -1,4 +1,4 @@
-package configs;
+package com.Mojodoo.knifeEdge.configs;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
