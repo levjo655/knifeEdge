@@ -18,7 +18,7 @@ const Page = () => {
   const { ingredients } = useLoaderData<typeof loader>();
 
   return (
-    <div>
+    <div className="flex items-center justify-center min-h-screen bg-black-100">
       <div className="space-y-4">
         {ingredients.map((x) => (
           <div className="p-2 bg-blue-500 flex flex-col">
@@ -31,7 +31,9 @@ const Page = () => {
         to="/ingredients/create"
         className="p-2 text-md font-semibold bg-blue-500"
       >
-        Skapa ingredient
+        <button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">Create ingredient
+
+        </button>
       </Link>
     </div>
   );

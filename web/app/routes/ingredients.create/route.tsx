@@ -34,11 +34,17 @@ const Page = () => {
   return (
     <div>
       <Form method="POST">
-        <div>
+        <div className="flex items-center justify-center min-h-screen bg-black-100">
           <label htmlFor="name">Namn</label>
           <input id="name" {...form.register("name")} />
+
+          <button
+            className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            type="submit"
+          >
+            Create
+          </button>
         </div>
-        <button type="submit">Skapa</button>
       </Form>
     </div>
   );
