@@ -141,108 +141,120 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
-      <Card className="max-w-md">
-        <CardHeader>
-          <CardTitle>Ingredients</CardTitle>
-          <CardDescription>
-            Here you can filter ingredients and add to your inventory
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <Input
-            placeholder="Search ingredients..."
-            value={ingredientSearchTerm}
-            onChange={(e) => setIngredientSearchTerm(e.target.value)}
-          />
-          <div className="h-80 overflow-y-auto">
-            <Table>
-              <TableHeader className="sticky top-0 bg-primary-foreground">
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead />
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.ingredients
-                  .filter((x) =>
-                    ingredientSearchTerm.length > 0
-                      ? x.name
-                          .toLowerCase()
-                          .startsWith(ingredientSearchTerm.toLowerCase())
-                      : true
-                  )
-                  .map((ingredient) => (
-                    <TableRow key={ingredient._id}>
-                      <TableCell>{ingredient.name}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          onClick={() =>
-                            addIngredientToInventory(ingredient._id)
-                          }
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Plus />
-                        </Button>
-                      </TableCell>
+    <div className="min-h-dvh w-full flex justify-center items-center">
+      <div className="grid grid-cols-3 grid-rows-2 gap-4">
+        <div className="col-span-1 row-span-2 grid gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Ingredients</CardTitle>
+              <CardDescription>
+                Here you can filter ingredients and add to your inventory
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Input
+                placeholder="Search ingredients..."
+                value={ingredientSearchTerm}
+                onChange={(e) => setIngredientSearchTerm(e.target.value)}
+              />
+              <div className="h-80 overflow-y-auto">
+                <Table>
+                  <TableHeader className="sticky top-0 bg-primary-foreground">
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead />
                     </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {data.ingredients
+                      .filter((x) =>
+                        ingredientSearchTerm.length > 0
+                          ? x.name
+                              .toLowerCase()
+                              .startsWith(ingredientSearchTerm.toLowerCase())
+                          : true
+                      )
+                      .map((ingredient) => (
+                        <TableRow key={ingredient._id}>
+                          <TableCell>{ingredient.name}</TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              onClick={() =>
+                                addIngredientToInventory(ingredient._id)
+                              }
+                              variant="ghost"
+                              size="icon"
+                            >
+                              <Plus />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
 
-      <Card className="max-w-md">
-        <CardHeader>
-          <CardTitle>Inventory</CardTitle>
-          <CardDescription>Selected Ingredients</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <Input
-            placeholder="Search ingredients..."
-            value={inventorySearchTerm}
-            onChange={(e) => setInventorySearchTerm(e.target.value)}
-          />
-          <div className="h-80 overflow-y-auto">
-            <Table>
-              <TableHeader className="sticky top-0 bg-primary-foreground">
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead />
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.inventory?.ingredients
-                  .filter((x) =>
-                    inventorySearchTerm.length > 0
-                      ? x.name
-                          .toLowerCase()
-                          .startsWith(inventorySearchTerm.toLowerCase())
-                      : true
-                  )
-                  .map((ingredient) => (
-                    <TableRow key={ingredient._id}>
-                      <TableCell>{ingredient.name}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          onClick={() =>
-                            removeIngredientFromInventory(ingredient._id)
-                          }
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <Delete />
-                        </Button>
-                      </TableCell>
+          <Card>
+            <CardHeader>
+              <CardTitle>Inventory</CardTitle>
+              <CardDescription>Selected Ingredients</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Input
+                placeholder="Search ingredients..."
+                value={inventorySearchTerm}
+                onChange={(e) => setInventorySearchTerm(e.target.value)}
+              />
+              <div className="h-80 overflow-y-auto">
+                <Table>
+                  <TableHeader className="sticky top-0 bg-primary-foreground">
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead />
                     </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {data.inventory?.ingredients
+                      .filter((x) =>
+                        inventorySearchTerm.length > 0
+                          ? x.name
+                              .toLowerCase()
+                              .startsWith(inventorySearchTerm.toLowerCase())
+                          : true
+                      )
+                      .map((ingredient) => (
+                        <TableRow key={ingredient._id}>
+                          <TableCell>{ingredient.name}</TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              onClick={() =>
+                                removeIngredientFromInventory(ingredient._id)
+                              }
+                              variant="ghost"
+                              size="icon"
+                            >
+                              <Delete />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="col-span-2 row-span-2">
+          <CardHeader>
+            <CardTitle>Recipes</CardTitle>
+            <CardDescription>Here you can recipies</CardDescription>
+          </CardHeader>
+          <CardContent></CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
