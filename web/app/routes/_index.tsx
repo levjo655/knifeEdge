@@ -4,6 +4,7 @@ import Footer from "~/components/Footer";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getValidatedFormData, useRemixForm } from "remix-hook-form";
+import { mongodb } from "~/lib/mongoDb.server";
 
 const schema = z.object({
   email: z
@@ -25,22 +26,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const { email, password } = data;
 
-  const userRes = await fetch("http://localhost:8080/api/user", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: email,
-      password: password,
-    }),
+  await mongodb.db("knifeEdgeRemix").collection("user").insertOne({
+    username: email,
+    password: password,
   });
 
-  const userData = await userRes.json();
-
-  console.log(userData);
-
   return null;
+};
+
+export const loader = async () => {
+  const users = await mongodb
+    .db("knifeEdgeRemix")
+    .collection("user")
+    .find()
+    .toArray();
+
+  return json({
+    users: users,
+  });
 };
 
 export default function Index() {

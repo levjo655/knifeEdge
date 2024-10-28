@@ -1,9 +1,26 @@
 import { useState } from "react";
-import App from "~/root";
 
 const IngredientsInput = () => {
-    return(
-        <div></div>
-    )
+  const [ingredient, setIngredient] = useState("");
+  const [message, setMessage] = useState("");
 
-}; export default IngredientsInput
+  const handleClick = async () => {};
+
+  const handleInputChange =(event) =>{
+    const { value }= event.target;
+    setIngredient(value);
+
+  }
+
+  return (
+    <div>
+      <input type="text" value={ingredient} 
+      onChange={handleInputChange}
+      />
+     
+      <button onClick={handleClick}>Add Ingredient</button>
+    </div>
+  );
+};
+
+export default IngredientsInput;
