@@ -23,6 +23,7 @@ import {
 } from "~/components/ui/table";
 import { mongodb } from "~/lib/mongoDb.server";
 import { Ingredient, Inventory } from "./types";
+import logo from "~/Images/knifeEdgeLogo.png";
 
 const userId = new ObjectId("671f92670d0146d6880f74b4");
 
@@ -141,7 +142,8 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-dvh w-full flex justify-center items-center">
+    <div className="min-h-dvh w-full flex flex-col justify-center items-center">
+      <img src={logo} className="h-48" alt="" />
       <div className="grid grid-cols-3 grid-rows-2 gap-4">
         <div className="col-span-1 row-span-2 grid gap-4">
           <Card>
