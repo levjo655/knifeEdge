@@ -9,3 +9,7 @@ export type Inventory = {
   userId: ObjectId;
   ingredients: Ingredient[];
 };
+export type Recipe = {
+  _id: ObjectId;
+  name: string;
+};

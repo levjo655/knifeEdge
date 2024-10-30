@@ -24,6 +24,7 @@ import {
 import { mongodb } from "~/lib/mongoDb.server";
 import { Ingredient, Inventory } from "./types";
 import logo from "~/Images/knifeEdgeLogo.png";
+import Recipes from "~/routes/home._index/Recipes";
 
 const userId = new ObjectId("671f92670d0146d6880f74b4");
 
@@ -31,6 +32,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const ingredientsPromise = mongodb
     .db("knifeEdgeRemix")
     .collection<Ingredient>("ingredient")
+    .find()
+    .toArray();
+    const recipies = await mongodb
+    .db("knifeEdgeRemix")
+    .collection("recipe")
     .find()
     .toArray();
 
@@ -47,6 +53,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({
     ingredients: ingredients,
     inventory: inventory,
+    recipies: recipies
   });
 }
 
@@ -254,7 +261,9 @@ export default function Page() {
             <CardTitle>Recipes</CardTitle>
             <CardDescription>Here you can recipies</CardDescription>
           </CardHeader>
-          <CardContent></CardContent>
+          <CardContent>
+            <Recipes recipies={data.recipies}></Recipes>
+          </CardContent>
         </Card>
       </div>
     </div>
