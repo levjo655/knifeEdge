@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { mongodb } from "~/lib/mongoDb.server";
-import { Ingredient, Inventory } from "./types";
+import { Ingredient, Inventory, Recipe } from "./types";
 import logo from "~/Images/knifeEdgeLogo.png";
 import Recipes from "~/routes/home._index/Recipes";
 
@@ -34,9 +34,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .collection<Ingredient>("ingredient")
     .find()
     .toArray();
-    const recipies = await mongodb
+  const recipiesPromise = mongodb
     .db("knifeEdgeRemix")
-    .collection("recipe")
+    .collection<Recipe>("recipe")
     .find()
     .toArray();
 
@@ -45,15 +45,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .collection<Inventory>("inventory")
     .findOne({ userId: userId });
 
-  const [ingredients, inventory] = await Promise.all([
+  const [ingredients, inventory, recipies] = await Promise.all([
     ingredientsPromise,
     inventoryPromise,
+    recipiesPromise,
   ]);
 
   return json({
     ingredients: ingredients,
     inventory: inventory,
-    recipies: recipies
+    recipies: recipies,
   });
 }
 
@@ -259,10 +260,12 @@ export default function Page() {
         <Card className="col-span-2 row-span-2">
           <CardHeader>
             <CardTitle>Recipes</CardTitle>
-            <CardDescription>Here you can recipies</CardDescription>
+            <CardDescription>
+              Here you can see all the available recipies
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Recipes recipies={data.recipies}></Recipes>
+            <Recipes recipies={data.recipies as unknown as Recipe[]}></Recipes>
           </CardContent>
         </Card>
       </div>

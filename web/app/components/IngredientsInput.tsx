@@ -1,26 +1,26 @@
-import { useState } from "react";
+// import { useState } from "react";
 
-const IngredientsInput = () => {
-  const [ingredient, setIngredient] = useState("");
-  const [message, setMessage] = useState("");
+// const IngredientsInput = () => {
+//   const [ingredient, setIngredient] = useState("");
+//   const [message, setMessage] = useState("");
 
-  const handleClick = async () => {};
+//   const handleClick = async () => {};
 
-  const handleInputChange =(event) =>{
-    const { value }= event.target;
-    setIngredient(value);
+//   const handleInputChange =(event) =>{
+//     const { value }= event.target;
+//     setIngredient(value);
 
-  }
+//   }
 
-  return (
-    <div>
-      <input type="text" value={ingredient} 
-      onChange={handleInputChange}
-      />
+//   return (
+//     <div>
+//       <input type="text" value={ingredient} 
+//       onChange={handleInputChange}
+//       />
      
-      <button onClick={handleClick}>Add Ingredient</button>
-    </div>
-  );
-};
+//       <button onClick={handleClick}>Add Ingredient</button>
+//     </div>
+//   );
+// };
 
-export default IngredientsInput;
+// export default IngredientsInput;

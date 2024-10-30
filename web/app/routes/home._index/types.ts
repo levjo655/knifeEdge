@@ -12,4 +12,9 @@ export type Inventory = {
 export type Recipe = {
   _id: ObjectId;
   name: string;
+  ingredients: {
+    name: string;
+    quantity: string;
+  }[];
+  instructions: string;
 };
