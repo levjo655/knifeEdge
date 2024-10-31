@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import React from "react";
 import { Recipe } from "./types";
 import { useState } from "react";
+import stirfry from "~/Images/spring-vegetable-stir-fry-3.jpg";
 
 import {
   Dialog,
