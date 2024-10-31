@@ -45,16 +45,32 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .collection<Inventory>("inventory")
     .findOne({ userId: userId });
 
+    
+
+
   const [ingredients, inventory, recipies] = await Promise.all([
     ingredientsPromise,
     inventoryPromise,
     recipiesPromise,
   ]);
 
+  const inventoryIngredientNames = inventory?.ingredients.map((ing) => ing.name) || [];
+  const suggestedRecipes = recipies
+    .map((recipe) => ({
+      ...recipe,
+      matchCount: recipe.ingredients.filter((ing) =>
+        inventoryIngredientNames.includes(ing.name)
+      ).length,
+    }))
+    .filter((recipe) => recipe.matchCount > 0) 
+    .sort((a, b) => b.matchCount - a.matchCount); 
+
+
   return json({
     ingredients: ingredients,
     inventory: inventory,
     recipies: recipies,
+    suggestedRecipes: suggestedRecipes,
   });
 }
 
@@ -256,6 +272,37 @@ export default function Page() {
             </CardContent>
           </Card>
         </div>
+        <Card className="col-span-2 row-span-2">
+          <CardHeader>
+            <CardTitle>Suggested Recipes</CardTitle>
+            <CardDescription>
+              Recipes based on your selected ingredients
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {data.suggestedRecipes.length > 0 ? (
+              <div className="space-y-4">
+                {data.suggestedRecipes.map((recipe) => (
+                  <div key={recipe._id.toString()} className="p-4 border rounded-md shadow">
+                    <h2 className="font-semibold text-lg">{recipe.name}</h2>
+                    <p>{recipe.instructions}</p>
+                    <p className="mt-2 text-sm text-gray-500">
+                      {recipe.matchCount} / {recipe.ingredients.length} ingredients matched
+                    </p>
+                    <ul className="list-disc list-inside">
+                      {recipe.ingredients.map((ingredient, index) => (
+                        <li key={index}>{ingredient.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No recipes match your selected ingredients.</p>
+            )}
+          </CardContent>
+        </Card>
+
 
         <Card className="col-span-2 row-span-2">
           <CardHeader>
