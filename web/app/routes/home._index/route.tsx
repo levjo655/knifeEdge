@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { redirect, useFetcher, useLoaderData } from "@remix-run/react";
 import { Delete, Minus, Plus } from "lucide-react";
 import { Db, ObjectId } from "mongodb";
 import { useState } from "react";
@@ -25,10 +25,16 @@ import { mongodb } from "~/lib/mongoDb.server";
 import { Ingredient, Inventory, Recipe } from "./types";
 import logo from "~/Images/knifeEdgeLogo.png";
 import Recipes from "~/routes/home._index/Recipes";
+import Header from "~/components/Header";
 
 const userId = new ObjectId("671f92670d0146d6880f74b4");
 
+
+
+
+
 export async function loader({ request }: LoaderFunctionArgs) {
+  
   const ingredientsPromise = mongodb
     .db("knifeEdgeRemix")
     .collection<Ingredient>("ingredient")
@@ -45,16 +51,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .collection<Inventory>("inventory")
     .findOne({ userId: userId });
 
-    
-
-
   const [ingredients, inventory, recipies] = await Promise.all([
     ingredientsPromise,
     inventoryPromise,
     recipiesPromise,
   ]);
 
-  const inventoryIngredientNames = inventory?.ingredients.map((ing) => ing.name) || [];
+  const inventoryIngredientNames =
+    inventory?.ingredients.map((ing) => ing.name) || [];
   const suggestedRecipes = recipies
     .map((recipe) => ({
       ...recipe,
@@ -62,9 +66,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
         inventoryIngredientNames.includes(ing.name)
       ).length,
     }))
-    .filter((recipe) => recipe.matchCount > 0) 
-    .sort((a, b) => b.matchCount - a.matchCount); 
-
+    .filter((recipe) => recipe.matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount);
 
   return json({
     ingredients: ingredients,
@@ -131,8 +134,9 @@ export async function action({ request }: ActionFunctionArgs) {
           }
         );
 
-      return json({
+      return  json({
         success: true,
+        
       });
     }
   }
@@ -283,11 +287,15 @@ export default function Page() {
             {data.suggestedRecipes.length > 0 ? (
               <div className="space-y-4">
                 {data.suggestedRecipes.map((recipe) => (
-                  <div key={recipe._id.toString()} className="p-4 border rounded-md shadow">
+                  <div
+                    key={recipe._id.toString()}
+                    className="p-4 border rounded-md shadow"
+                  >
                     <h2 className="font-semibold text-lg">{recipe.name}</h2>
                     <p>{recipe.instructions}</p>
                     <p className="mt-2 text-sm text-gray-500">
-                      {recipe.matchCount} / {recipe.ingredients.length} ingredients matched
+                      {recipe.matchCount} / {recipe.ingredients.length}{" "}
+                      ingredients matched
                     </p>
                     <ul className="list-disc list-inside">
                       {recipe.ingredients.map((ingredient, index) => (
@@ -302,7 +310,6 @@ export default function Page() {
             )}
           </CardContent>
         </Card>
-
 
         <Card className="col-span-2 row-span-2">
           <CardHeader>

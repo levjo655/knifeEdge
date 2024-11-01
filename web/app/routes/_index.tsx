@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { json, redirect, type ActionFunctionArgs } from "@remix-run/node";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import { z } from "zod";
@@ -22,6 +22,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   >(request, resolver);
   if (errors) {
     return json({ errors, receivedValues, data });
+    
   }
 
   const { email, password } = data;
