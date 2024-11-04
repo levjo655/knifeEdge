@@ -12,3 +12,4 @@ export default function RouteComponent() {
   const data = useLoaderData<typeof loader>();
   return <div></div>;
 }
+ 
