@@ -26,15 +26,13 @@ import { Ingredient, Inventory, Recipe } from "./types";
 import logo from "~/Images/knifeEdgeLogo.png";
 import Recipes from "~/routes/home._index/Recipes";
 import Header from "~/components/Header";
+import { requireUser } from "~/session/guards.server";
 
 const userId = new ObjectId("671f92670d0146d6880f74b4");
 
-
-
-
-
 export async function loader({ request }: LoaderFunctionArgs) {
-  
+  await requireUser(request);
+
   const ingredientsPromise = mongodb
     .db("knifeEdgeRemix")
     .collection<Ingredient>("ingredient")
@@ -134,9 +132,8 @@ export async function action({ request }: ActionFunctionArgs) {
           }
         );
 
-      return  json({
+      return json({
         success: true,
-        
       });
     }
   }

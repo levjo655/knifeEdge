@@ -2,21 +2,26 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import { Form, redirect } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { createUser } from "~/models/user.server";
-import { storeUserInSession } from "./session/session.server";
+import { storeUserInSession } from "../session/session.server";
 
 // Adding authentication
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-    const formData = await request.formData();
-    const email= formData.get("email");
-    const passoword= formData.get("password");
-    const user = await createUser(email as string, passoword as string);
-    const sessionHeader = await storeUserInSession( user);
-  return redirect ("/dashboard" , {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const passoword = formData.get("password");
+
+  
+
+
+
+
+  const session = await storeUserInSession(user);
+
+  return redirect("/home", {
     headers: {
-        "Set-Cookie": sessionHeader
-    }
+      "Set-Cookie": session,
+    },
   });
 };
 

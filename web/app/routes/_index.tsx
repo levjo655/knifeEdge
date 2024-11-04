@@ -5,6 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getValidatedFormData, useRemixForm } from "remix-hook-form";
 import { mongodb } from "~/lib/mongoDb.server";
+import { User } from "~/types";
+import { storeUserInSession } from "~/session/session.server";
 
 const schema = z.object({
   email: z
@@ -22,17 +24,30 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   >(request, resolver);
   if (errors) {
     return json({ errors, receivedValues, data });
-    
   }
 
   const { email, password } = data;
 
-  await mongodb.db("knifeEdgeRemix").collection("user").insertOne({
-    username: email,
-    password: password,
-  });
+  const user = await mongodb
+    .db("knifeEdgeRemix")
+    .collection<User>("user")
+    .findOne({ username: email });
 
-  return null;
+  if (!user) {
+    throw json({ message: "invalid credentials" }, 400);
+  }
+
+  if (user.password !== password) {
+    throw json({ message: "invalid credentials" }, 400);
+  }
+
+  const session = await storeUserInSession(user);
+
+  return redirect("/home", {
+    headers: {
+      "Set-Cookie": session,
+    },
+  });
 };
 
 export const loader = async () => {
