@@ -33,6 +33,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     .collection<User>("user")
     .findOne({ username: email });
 
+  console.log("args", { aEmail: email, aPassword: password });
+  console.log("mongo", user);
+
   if (!user) {
     throw json({ message: "invalid credentials" }, 400);
   }

@@ -65,7 +65,6 @@ export default function RegisterRoute() {
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
           Register
         </h1>
-        <p className="text-center text-gray-600 mb-6">Register below</p>
 
         <Input
           name="email"
