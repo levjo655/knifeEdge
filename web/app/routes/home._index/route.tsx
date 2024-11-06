@@ -24,9 +24,10 @@ import {
 import { mongodb } from "~/lib/mongoDb.server";
 import { Ingredient, Inventory, Recipe } from "./types";
 import logo from "~/Images/knifeEdgeLogo.png";
-import Recipes from "~/routes/home._index/Recipes";
 import Header from "~/components/Header";
 import { requireUser } from "~/session/guards.server";
+import Footer from "~/components/Footer";
+import Recipes from "./Recipes";
 
 const userId = new ObjectId("671f92670d0146d6880f74b4");
 
@@ -168,6 +169,8 @@ export default function Page() {
 
   return (
     <div className="min-h-dvh w-full flex flex-col justify-center items-center">
+      <header className="w-full">{Header()}</header>
+
       <img src={logo} className="h-48" alt="" />
       <div className="grid grid-cols-3 grid-rows-2 gap-4">
         <div className="col-span-1 row-span-2 grid gap-4">
@@ -308,7 +311,7 @@ export default function Page() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-2 row-span-2">
+         <Card className="col-span-2 row-span-2">
           <CardHeader>
             <CardTitle>Recipes</CardTitle>
             <CardDescription>
@@ -318,8 +321,10 @@ export default function Page() {
           <CardContent>
             <Recipes recipies={data.recipies as unknown as Recipe[]}></Recipes>
           </CardContent>
-        </Card>
+        </Card> 
       </div>
+      <footer>{Footer()}</footer>
+    
     </div>
   );
 }

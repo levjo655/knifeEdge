@@ -1,5 +1,8 @@
+import { Navigate, redirect, useNavigate } from "@remix-run/react";
 import logo from "../Images/knifeEdgeLogo.png";
+
 const Header = () => {
+  const Navigate = useNavigate();
   return (
     <div className="flex w-full justify-between bg-slate-300">
       <img
@@ -10,11 +13,25 @@ const Header = () => {
       <header className="header justify-between items-end py-4 px-8 ">
         <nav className="flex space-x-6 justify-end">
           <ul className="flex space-x-16 justify-end">
-            <li className="hover:text-gray-700 cursor-pointer">Home</li>
-            <li className="hover:text-gray-700 cursor-pointer">Profile</li>
-            <li className="hover:text-gray-700 cursor-pointer">Recepies</li>
+            <li
+              onClick={() => Navigate("/Home")}
+              className="hover:text-gray-700 cursor-pointer"
+            >
+              Home
+            </li>
+            <li
+              onClick={() => Navigate("/Recipe")}
+              className="hover:text-gray-700 cursor-pointer"
+            >
+              Recipes
+            </li>
             <li className="hover:text-gray-700 cursor-pointer">My knives</li>
-            <li className="hover:text-gray-700 cursor-pointer">About</li>
+            <li
+              onClick={() => Navigate("/About")}
+              className="hover:text-gray-700 cursor-pointer"
+            >
+              About
+            </li>
           </ul>
         </nav>
       </header>
