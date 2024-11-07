@@ -1,19 +1,30 @@
 import React from "react";
 import { mongodb } from "~/lib/mongoDb.server";
-import { Recipe } from "~/routes/home._index/types";
+import { Ingredient, Recipe } from "~/routes/home._index/types";
 
 type RecipeCardProps = {
-  recipe: Recipe;
+  name: string;
+  ingredients: Ingredient[];
+  instructions: string;
 };
 
-export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
-  if (!recipe) {
-    return <div>No recipe data available.</div>;
-  }
-
+export const RecipeCard: React.FC<RecipeCardProps> = ({
+  name,
+  ingredients,
+  instructions
+}) => {
   return (
-    <div className="p-4 border rounded-lg shadow-md">
-      <h2 className="text-lg font-bold">{recipe.name}</h2>
+    <div className="p-4 border rounded-lg border-black border-solid shadow-md">
+      <h2 className="text-lg font-bold">{name}</h2>
+       <p className="mt-2">{instructions}</p> 
+       <p className="mt-2 text-sm text-gray-500">
+        {ingredients.length} ingredients required
+      </p> 
+      <ul className="list-disc list-inside">
+        {ingredients.map((ingredient, index) => (
+          <li key={index}>{ingredient.name}</li>
+        ))}
+      </ul>
     </div>
   );
 };

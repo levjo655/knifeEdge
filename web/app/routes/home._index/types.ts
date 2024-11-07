@@ -18,4 +18,3 @@ export type Recipe = {
   }[];
   instructions: string;
 };
-

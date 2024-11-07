@@ -169,8 +169,6 @@ export default function Page() {
 
   return (
     <div className="min-h-dvh w-full flex flex-col justify-center items-center">
-      <header className="w-full">{Header()}</header>
-
       <img src={logo} className="h-48" alt="" />
       <div className="grid grid-cols-3 grid-rows-2 gap-4">
         <div className="col-span-1 row-span-2 grid gap-4">
@@ -310,21 +308,7 @@ export default function Page() {
             )}
           </CardContent>
         </Card>
-
-         <Card className="col-span-2 row-span-2">
-          <CardHeader>
-            <CardTitle>Recipes</CardTitle>
-            <CardDescription>
-              Here you can see all the available recipies
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Recipes recipies={data.recipies as unknown as Recipe[]}></Recipes>
-          </CardContent>
-        </Card> 
       </div>
-      <footer>{Footer()}</footer>
-    
     </div>
   );
 }

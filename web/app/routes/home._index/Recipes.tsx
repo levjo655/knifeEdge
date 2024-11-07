@@ -12,6 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
+import { RecipeCard } from "~/components/Recipe";
+import { data } from "@remix-run/react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "~/components/ui/card";
 
 const Recipes: React.FC<{ recipies: Recipe[] }> = ({ recipies }) => {
   return (
@@ -39,8 +42,24 @@ const Recipes: React.FC<{ recipies: Recipe[] }> = ({ recipies }) => {
                     ))}
                   </ul>
                 </div>
+                <div className="grid grid-cols-1 gap-4">
+                  {recipies.map((recipe) => (
+                    <RecipeCard key={recipe._id.toString()} recipe={recipe} />
+                  ))}
+                </div>
               </DialogContent>
             </Dialog>
+            <Card className="col-span-2 row-span-2">
+          <CardHeader>
+            <CardTitle>Recipes</CardTitle>
+            <CardDescription>
+              Here you can see all the available recipies
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* <Recipes recipies={data.recipies as unknown as Recipe[]}></Recipes> */}
+          </CardContent>
+        </Card> 
           </div>
         ))}
       </div>
