@@ -25,7 +25,12 @@ const Header = () => {
             >
               Recipes
             </li>
-            <li className="hover:text-gray-700 cursor-pointer">My knives</li>
+            <li
+              onClick={() => Navigate("/knives")}
+              className="hover:text-gray-700 cursor-pointer"
+            >
+              My knives
+            </li>
             <li
               onClick={() => Navigate("/About")}
               className="hover:text-gray-700 cursor-pointer"

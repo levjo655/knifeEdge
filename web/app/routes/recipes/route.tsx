@@ -13,7 +13,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     .find()
     .toArray();
 
+  const FetchKnivesFromDb = mongodb
+    .db("knifeEdgeRemix")
+    .collection<Recipe>("knives")
+    .find()
+    .toArray();
+
   const recipes = await FetchRecipesFromDb;
+  const knives = await FetchKnivesFromDb;
 
   return json({ recipes });
 };
@@ -22,8 +29,13 @@ const Page = () => {
   const { recipes } = useLoaderData<typeof loader>();
   return (
     <div>
-      {recipes.map((recipe: any) => (
-        <RecipeCard name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions}/>
+      {recipes.map((recipe: Recipe) => (
+        <RecipeCard
+          name={recipe.name}
+          ingredients={recipe.ingredients}
+          instructions={recipe.instructions}
+          recommendedKnife={recipe.recommendedKnife}
+        />
       ))}
     </div>
   );
