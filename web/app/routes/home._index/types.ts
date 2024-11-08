@@ -20,6 +20,6 @@ export type Recipe = {
 export type Knife = {
   _id: ObjectId;
   name: string;
-  // type: string;
-  // length: number;
+   type: string;
+   length: number;
 };
