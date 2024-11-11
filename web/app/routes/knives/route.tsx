@@ -3,155 +3,177 @@ import React from "react";
 import { mongodb } from "~/lib/mongoDb.server";
 import { Knife } from "../home._index/types";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
-import { Card } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import logo from "~/Images/knifeEdgeLogo.png";
-import { parseFormData } from "remix-hook-form";
+import {
+  getValidatedFormData,
+  parseFormData,
+  useRemixForm,
+} from "remix-hook-form";
 import { ObjectId } from "mongodb";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+
+const schema = z.object({
+  name: z.string(),
+  type: z.string(),
+  length: z.string(),
+});
+
+type FormData = z.infer<typeof schema>;
+const resolver = zodResolver(schema);
 
 // Loader function to fetch all knives from the "knives" collection
 export const loader: LoaderFunction = async () => {
-  const fetchKnivesFromDb = await mongodb
+  const knives = await mongodb
     .db("knifeEdgeRemix")
     .collection<Knife>("knives")
     .find()
     .toArray();
 
-  return json({ fetchKnivesFromDb });
+  return json({
+    knives: knives,
+  });
 };
 
 // Action function to handle adding and removing knives from inventory
 export async function action({ request }: ActionFunctionArgs) {
-  const formData = await parseFormData<{
-    intent: "addToInventory" | "removeFromInventory" | "createKnife";
-    knifeId: string;
-    knifeName: string;
-    knifeType: string;
-    knifeLength: string
-  }>(request);
-
-  switch (formData.intent) {
-    case "addToInventory": {
-      const knife = await mongodb
-        .db("knifeEdgeRemix")
-        .collection("knives")
-        .findOne({ _id: new ObjectId(formData.knifeId) });
-
-      if (!knife) {
-        throw new Error("Knife not found");
-      }
-
-      await mongodb
-        .db("knifeEdgeRemix")
-        .collection("inventory")
-        .updateOne(
-          { knifeId: knife._id },
-          { $addToSet: { knife } },
-          { upsert: true }
-        );
-
-      return json({ message: "Knife added to inventory" });
-    }
-
-    case "removeFromInventory": {
-      await mongodb
-        .db("knifeEdgeRemix")
-        .collection("inventory")
-        .deleteOne({ knifeId: new ObjectId(formData.knifeId) });
-
-      return json({ message: "Knife removed from inventory" });
-    }
-    case "createKnife": {
-      await mongodb
-        .db("knifeEdgeRemix")
-        .collection("knives")
-        .insertOne({ name:formData.knifeName, length: formData.knifeLength, type: formData.knifeType });
-      return json({ message: "knife was created" });
-    }
-
-    default:
-      throw new Error("Invalid intent");
+  console.log("actuib");
+  const {
+    errors,
+    data,
+    receivedValues: defaultValues,
+  } = await getValidatedFormData<FormData>(request, resolver);
+  if (errors) {
+    return json({ errors, defaultValues });
   }
+
+  await mongodb.db("knifeEdgeRemix").collection("knives").insertOne({
+    name: data.name,
+    length: data.length,
+    type: data.type,
+  });
+
+  return json({ message: "knife was created" });
 }
 
 export const Page = () => {
-  const { fetchKnivesFromDb } = useLoaderData<typeof loader>();
-  const fetcher = useFetcher();
+  const { knives } = useLoaderData<typeof loader>();
+
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+    register,
+  } = useRemixForm<FormData>({
+    mode: "onSubmit",
+    defaultValues: {
+      type: "Stainless",
+    },
+    resolver,
+  });
+
+  console.log(errors);
 
   return (
-    <div className="min-h-dvh w-full flex flex-col justify-center items-center p-6">
-      <img
-        src={logo}
-        alt="Knife Edge Logo"
-        className="w-32 h-32 mx-auto mb-6"
-      />
-      <h1 className="text-2xl font-semibold mb-4">All Knives</h1>
-
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
-        {fetchKnivesFromDb.map((knife) => (
-          <li key={knife._id}>
-            <Card className="p-4 shadow-md border rounded-lg flex flex-col items-center text-center">
-              <h2 className="text-xl font-medium mb-2">{knife.name}</h2>
-              <h2 className="text-xl font-medium mb-2">{knife.type}</h2>
-              <h2 className="text-xl font-medium mb-2">{knife.length}</h2>
-
-           
-              <div className="mt-4">
-                <Form method="post" className="flex flex-col gap-4">
-                  <input type="hidden" name="intent" value="createKnife" />
-
-               
-                  <label className="text-left">
-                    Knife Name:
-                    <input
-                      type="text"
-                      name="knifeName"
-                      placeholder="Enter knife name"
-                      required
-                      className="input-field mt-1 p-2 border rounded"
-                    />
-                  </label>
-
-                  <label className="text-left">
-                    Knife Type:
-                    <select
-                      name="knifeType"
-                      required
-                      className="input-field mt-1 p-2 border rounded"
-                    >
-                      <option value="" disabled selected>
-                        Select knife type
-                      </option>
-                      <option value="chef knife">Chef Knife</option>
-                      <option value="slicer">Slicer</option>
-                      <option value="petty">Petty</option>
-                      <option value="serrated">Serrated</option>
-                    </select>
-                  </label>
-
-                  <label className="text-left">
-                    Knife Length (cm):
-                    <input
-                      type="text"
-                      name="knifeLength"
-                      placeholder="Enter length in cm"
-                      required
-                      className="input-field mt-1 p-2 border rounded"
-                    />
-                  </label>
-
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 mt-2 rounded hover:bg-blue-600"
+    <>
+      <div className="min-h-dvh w-full flex flex-col justify-center items-center p-6">
+        <img
+          src={logo}
+          alt="Knife Edge Logo"
+          className="w-32 h-32 mx-auto mb-6"
+        />
+        <h1 className="text-2xl font-semibold mb-4">All Knives</h1>
+        <Card>
+          <CardHeader>
+            <CardTitle>All Knives</CardTitle>
+            <CardContent>
+              <div className="flex flex-col gap-4">
+                {knives.map((x, index) => (
+                  <div
+                    key={index}
+                    className="p-4 rounded-lg shadow bg-gray-50 hover:bg-gray-100 border border-gray-300 flex flex-col"
                   >
-                    Create Knife
-                  </button>
-                </Form>
+                    <div className="font-semibold text-lg text-blue-600">
+                      {x.name}
+                    </div>
+                    <div className="text-gray-700">{x.type}</div>
+                    <div className="text-gray-700">{x.length}</div>
+                  </div>
+                ))}
               </div>
-            </Card>
-          </li>
-        ))}
-      </ul>
-    </div>
+            </CardContent>
+          </CardHeader>
+        </Card>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Create knife</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <Form onSubmit={handleSubmit} method="POST">
+              <DialogHeader>
+                <DialogTitle>Create knife</DialogTitle>
+                <DialogDescription>
+                  Here you can create a new knife
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label>Name</Label>
+                  <Input {...register("name")} />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Knife type </Label>
+                  <Select
+                    value={watch("type")}
+                    onValueChange={(value) => setValue("type", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Stainless">Stainless</SelectItem>
+                      <SelectItem value="Carbon">Carbon</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Knife Length (cm)</Label>
+                  <Input {...register("length")} />
+                </div>
+              </div>
+              <DialogFooter>
+                <DialogClose>
+                  <Button variant="secondary">Cancel</Button>
+                </DialogClose>
+                <Button type="submit">Create</Button>
+              </DialogFooter>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 };
 
