@@ -78,7 +78,6 @@ export default function Index() {
 
   return (
     <div className="flex flex-col h-full min-h-screen">
-      <Header />
       <main className="flex-auto justify-center align-middle">
         {/* Form with handleSubmit */}
         <form

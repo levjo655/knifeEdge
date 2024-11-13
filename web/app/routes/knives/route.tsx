@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, json, LoaderFunction } from "@remix-run/node";
-import React from "react";
+import React, { useState } from "react";
 import { mongodb } from "~/lib/mongoDb.server";
 import { Knife } from "../home._index/types";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
@@ -35,6 +35,7 @@ import {
 } from "~/components/ui/select";
 
 const schema = z.object({
+  intent: z.literal("createKnife").default("createKnife"),
   name: z.string(),
   type: z.string(),
   length: z.string(),
@@ -58,27 +59,47 @@ export const loader: LoaderFunction = async () => {
 
 // Action function to handle adding and removing knives from inventory
 export async function action({ request }: ActionFunctionArgs) {
-  console.log("actuib");
-  const {
-    errors,
-    data,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData<FormData>(request, resolver);
-  if (errors) {
-    return json({ errors, defaultValues });
+  const formData = await parseFormData<{
+    intent: "removeFromInventory" | "createKnife";
+    knifeId: string;
+  }>(request.clone());
+
+  switch (formData.intent) {
+    case "createKnife": {
+      const {
+        errors,
+        data,
+        receivedValues: defaultValues,
+      } = await getValidatedFormData<FormData>(request, resolver);
+      if (errors) {
+        return json({ errors, defaultValues });
+      }
+
+      const result = await mongodb
+        .db("knifeEdgeRemix")
+        .collection("knives")
+        .insertOne({
+          name: data.name,
+          length: data.length,
+          type: data.type,
+        });
+
+      return json({ message: "knife was created" });
+    }
+    case "removeFromInventory": {
+      const knife = await mongodb
+        .db("knifeEdgeRemix")
+        .collection("knives")
+        .deleteOne({ _id: new ObjectId(formData.knifeId) });
+
+      return json({});
+    }
   }
-
-  await mongodb.db("knifeEdgeRemix").collection("knives").insertOne({
-    name: data.name,
-    length: data.length,
-    type: data.type,
-  });
-
-  return json({ message: "knife was created" });
 }
 
 export const Page = () => {
   const { knives } = useLoaderData<typeof loader>();
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     handleSubmit,
@@ -120,15 +141,30 @@ export const Page = () => {
                     </div>
                     <div className="text-gray-700">{x.type}</div>
                     <div className="text-gray-700">{x.length}</div>
+                    <Form method="post">
+                      <input
+                        type="hidden"
+                        name="intent"
+                        value="removeFromInventory"
+                      />
+                      <input type="hidden" name="knifeId" value={x._id} />
+                      <Button type="submit">Delete knife </Button>
+                    </Form>
                   </div>
                 ))}
               </div>
             </CardContent>
           </CardHeader>
         </Card>
-        <Dialog>
+        <Dialog open={isOpen}>
           <DialogTrigger asChild>
-            <Button>Create knife</Button>
+            <Button
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            >
+              Create knife
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <Form onSubmit={handleSubmit} method="POST">
@@ -164,10 +200,18 @@ export const Page = () => {
                 </div>
               </div>
               <DialogFooter>
-                <DialogClose>
-                  <Button variant="secondary">Cancel</Button>
-                </DialogClose>
-                <Button type="submit">Create</Button>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsOpen(false);
+                  }}
+                  variant="secondary"
+                >
+                  Cancel
+                </Button>
+                <Button onClick={() => setIsOpen(false)} type="submit">
+                  Create
+                </Button>
               </DialogFooter>
             </Form>
           </DialogContent>
