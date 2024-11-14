@@ -176,7 +176,7 @@ export default function Page() {
             <CardHeader>
               <CardTitle>Ingredients</CardTitle>
               <CardDescription>
-                Here you can filter ingredients and add to your inventory
+                What's in the fridge? 
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">

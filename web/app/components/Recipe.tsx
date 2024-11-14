@@ -16,7 +16,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   recommendedKnife,
 }) => {
   return (
-    <div className="p-4 border rounded-lg border-black border-solid shadow-md">
+    <div className="p-4 border rounded-lg border-solid shadow-md hover:bg-gray-100 border-gray-300 round-lg">
       <h2 className="text-lg font-bold">{name}</h2>
       <p className="mt-2">{instructions}</p>
       <p className="mt-2 text-sm text-gray-500">
@@ -28,9 +28,11 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
             {ingredient.name} - {ingredient.quantity}
           </li>
         ))}
-        {name === "Quinoa Salad with Chickpeas" && (
-            <li> Recommended Knife : {recommendedKnife.name}</li>
-        )}
+        <li>
+          {" "}
+          Recommended Knife : {recommendedKnife.name}, {recommendedKnife.type},{" "}
+          {recommendedKnife.length}
+        </li>
       </ul>
     </div>
   );
