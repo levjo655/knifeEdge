@@ -28,13 +28,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 const Page = () => {
   const { recipes } = useLoaderData<typeof loader>();
   return (
-    <div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 h-screen auto-rows-fr">
       {recipes.map((recipe: Recipe) => (
         <RecipeCard
           name={recipe.name}
           ingredients={recipe.ingredients}
           instructions={recipe.instructions}
           recommendedKnife={recipe.recommendedKnife}
+          imgUrl={recipe.imgUrl}
         />
       ))}
     </div>

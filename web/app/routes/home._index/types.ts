@@ -16,6 +16,7 @@ export type Recipe = {
   ingredients: Ingredient[];
   instructions: string;
   recommendedKnife: Knife;
+  imgUrl: string;
 };
 export type Knife = {
   _id: ObjectId;
