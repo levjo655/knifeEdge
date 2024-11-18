@@ -34,10 +34,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        <Header></Header>
-        {children}
-        <Footer></Footer>
+      <body className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
         <ScrollRestoration />
         <Scripts />
       </body>
