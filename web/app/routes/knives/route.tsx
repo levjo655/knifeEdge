@@ -130,7 +130,7 @@ export const Page = () => {
           <CardHeader>
             <CardTitle>All Knives</CardTitle>
             <CardContent>
-              <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols2 md:grid-cols-3 gap-6 p-6 h-screen auto-rows-fr">
                 {knives.map((x, index) => (
                   <div
                     key={index}
