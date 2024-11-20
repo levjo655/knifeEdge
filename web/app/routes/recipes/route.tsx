@@ -44,45 +44,38 @@ const Page = () => {
     recipe.name.toLowerCase().includes(recipesSearchTerm.toLowerCase())
   );
   return (
-<div className="flex flex-col min-h-screen">
-      {/* Header or Logo */}
-      <div className="flex flex-col items-center p-6">
-        <div className="mb-4">
-          <img src={logo} className="h-48 object-contain" alt="Logo" />
-        </div>
-
-        {/* Search Input */}
-        <div className="w-full max-w-md mb-6">
-          <Input
-            placeholder="Search..."
-            value={searchParams.get("q") ?? ""}
-            onChange={(e) => {
-              setSearchParams((prev) => {
-                prev.set("q", e.target.value);
-                return prev;
-              });
-            }}
-          />
-        </div>
+    <div className="flex flex-col items-center p-6 w-full min-h-screen flex-grow">
+      <div className="mb-4">
+        <img src={logo} className="h-48 object-contain" alt="Logo" />
       </div>
 
-      {/* Recipes Grid */}
-      <main className="flex-grow">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full px-6">
-          {filteredRecipes.length > 0 ? (
-            filteredRecipes.map((recipe: Recipe) => (
-              <RecipeCard
-                key={recipe.name}
-                name={recipe.name}
-                ingredients={recipe.ingredients}
-                instructions={recipe.instructions}
-                recommendedKnife={recipe.recommendedKnife}
-                imgUrl={recipe.imgUrl}
-              />
-            ))
-          ) : (
-            <p className="text-center w-full col-span-full">No recipes found.</p>
-          )}
+      <div className="w-full max-w-md mb-6">
+        <Input
+          placeholder="Search..."
+          value={searchParams.get("q") ?? undefined}
+          onChange={(e) => {
+            setSearchParams((prev) => {
+              prev.set("q", e.target.value);
+              return prev;
+            });
+          }}
+        />
+      </div>
+
+      <main className="flex-grow w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 h-screen lg:grid-cols-4 gap-6 w-full auto-rows-fr">
+          {recipes.map((recipe: Recipe) => (
+            <RecipeCard
+              key={recipe.name}
+              name={recipe.name}
+              ingredients={recipe.ingredients}
+              instructions={recipe.instructions}
+              recommendedKnife={recipe.recommendedKnife}
+              imgUrl={recipe.imgUrl}
+              isExpanded={false}
+              onToggle={() => {}}
+            />
+          ))}
         </div>
       </main>
     </div>
