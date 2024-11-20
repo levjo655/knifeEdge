@@ -119,59 +119,76 @@ export const Page = () => {
 
   return (
     <>
-      <div className="min-h-dvh w-full flex flex-col justify-center items-center p-6">
+      <div className="min-h-screen w-full flex flex-col items-center p-6 ">
         <img
           src={logo}
           alt="Knife Edge Logo"
-          className="w-32 h-32 mx-auto mb-6"
+          className="w-32 h-32 mx-auto mb-8"
         />
-        <h1 className="text-2xl font-semibold mb-4">All Knives</h1>
-        <Card>
-          <CardHeader>
-            <CardTitle>All Knives</CardTitle>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols2 md:grid-cols-3 gap-6 p-6 h-screen auto-rows-fr">
-                {knives.map((x, index) => (
-                  <div
-                    key={index}
-                    className="p-4 rounded-lg shadow bg-gray-50 hover:bg-gray-100 border border-gray-300 flex flex-col"
-                  >
-                    <div className="font-semibold text-lg text-blue-600">
-                      {x.name}
-                    </div>
-                    <div className="text-gray-700">{x.type}</div>
-                    <div className="text-gray-700">{x.length}</div>
-                    <Form method="post">
-                      <input
-                        type="hidden"
-                        name="intent"
-                        value="removeFromInventory"
-                      />
-                      <input type="hidden" name="knifeId" value={x._id} />
-                      <Button type="submit">Delete knife </Button>
-                    </Form>
-                  </div>
-                ))}
+
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">All Knifes</h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl">
+          {knives.map((knife, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-start p-4 rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow border border-gray-200"
+            >
+              <div className="w-full h-32 bg-gray-100 flex items-center justify-center rounded-lg mb-4">
+                <span className="text-gray-500 text-sm">
+                  No Image Available
+                </span>
               </div>
-            </CardContent>
-          </CardHeader>
-        </Card>
+
+              <div className="flex-grow w-full">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {knife.name}
+                </h2>
+                <p className="text-sm text-gray-600 mt-2">
+                  Type: <span className="font-medium">{knife.type}</span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Length: <span className="font-medium">{knife.length} cm</span>
+                </p>
+              </div>
+
+              {/* Actions */}
+              <Form method="post" className="mt-4 w-full">
+                <input
+                  type="hidden"
+                  name="intent"
+                  value="removeFromInventory"
+                />
+                <input type="hidden" name="knifeId" value={knife._id} />
+                <Button
+                  type="submit"
+                  className="w-full text-white hover:bg-blue-100 rounded-lg py-2 text-sm"
+                >
+                  Delete Knife
+                </Button>
+              </Form>
+            </div>
+          ))}
+        </div>
+
+        {/* Add Knife Button */}
         <Dialog open={isOpen}>
           <DialogTrigger asChild>
             <Button
               onClick={() => {
                 setIsOpen(true);
               }}
+              className="mt-8"
             >
-              Create knife
+              Add New Knife
             </Button>
           </DialogTrigger>
           <DialogContent>
             <Form onSubmit={handleSubmit} method="POST">
               <DialogHeader>
-                <DialogTitle>Create knife</DialogTitle>
+                <DialogTitle>Create Knife</DialogTitle>
                 <DialogDescription>
-                  Here you can create a new knife
+                  Fill in the details below to add a new knife.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -180,13 +197,13 @@ export const Page = () => {
                   <Input {...register("name")} />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Knife type </Label>
+                  <Label>Knife Type</Label>
                   <Select
                     value={watch("type")}
                     onValueChange={(value) => setValue("type", value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="" />
+                      <SelectValue placeholder="Select Knife Type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Stainless">Stainless</SelectItem>
