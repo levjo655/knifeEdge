@@ -2,6 +2,7 @@ import { redirect } from "@remix-run/react";
 import { GetUserIdFromSession } from "./session.server";
 import { mongodb } from "~/lib/mongoDb.server";
 import { ObjectId } from "mongodb";
+import { User } from "~/types";
 
 export const requireUser = async (request: Request) => {
   const userId = await GetUserIdFromSession(request);
@@ -12,7 +13,7 @@ export const requireUser = async (request: Request) => {
 
   const user = await mongodb
     .db("knifeEdgeRemix")
-    .collection("user")
+    .collection<User>("user")
     .findOne({
       _id: ObjectId.createFromHexString(userId),
     });
@@ -20,4 +21,6 @@ export const requireUser = async (request: Request) => {
   if (!user) {
     throw redirect("/");
   }
+
+  return user;
 };

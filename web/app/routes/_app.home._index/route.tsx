@@ -175,9 +175,7 @@ export default function Page() {
           <Card>
             <CardHeader>
               <CardTitle>Ingredients</CardTitle>
-              <CardDescription>
-                What's in the fridge? 
-              </CardDescription>
+              <CardDescription>What's in the fridge?</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               <Input

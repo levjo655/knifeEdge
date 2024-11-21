@@ -3,8 +3,8 @@ import { RecipeCard } from "~/components/Recipe";
 import { json } from "@remix-run/node";
 import { useFetcher, useLoaderData, useSearchParams } from "@remix-run/react";
 import { mongodb } from "~/lib/mongoDb.server";
-import { Recipe } from "../home._index/types";
-import Recipes from "../home._index/Recipes";
+import { Recipe } from "../_app.home._index/types";
+import Recipes from "../_app.home._index/Recipes";
 
 import logo from "~/Images/knifeEdgeLogo.png";
 import { useState } from "react";

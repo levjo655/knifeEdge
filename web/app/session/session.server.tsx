@@ -16,9 +16,10 @@ const { commitSession, destroySession, getSession } =
 
 export const storeUserInSession = async (user: User) => {
   const session = await getSession();
+  session.set("user", { username: user.username });
   session.set("userId", user._id);
   const header = await commitSession(session);
-  return header;
+  return header && commitSession(session);
 };
 
 export const GetUserIdFromSession = async (request: Request) => {
@@ -26,3 +27,5 @@ export const GetUserIdFromSession = async (request: Request) => {
   const userId = session.get("userId");
   return userId ?? null;
 };
+
+export { getSession, destroySession };

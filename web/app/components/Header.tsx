@@ -1,5 +1,12 @@
-import { Navigate, redirect, useNavigate } from "@remix-run/react";
+import {
+  Navigate,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from "@remix-run/react";
 import logo from "../Images/knifeEdgeLogo.png";
+import { LoaderFunction } from "@remix-run/node";
 
 const Header = () => {
   const Navigate = useNavigate();

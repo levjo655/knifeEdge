@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { boolean } from "zod";
-import { Ingredient, Knife } from "~/routes/home._index/types";
+import { Ingredient, Knife } from "~/routes/_app.home._index/types";
 
 type RecipeCardProps = {
   name: string;
@@ -8,9 +8,8 @@ type RecipeCardProps = {
   instructions: string;
   recommendedKnife: Knife;
   imgUrl: string;
-  isExpanded: boolean
+  isExpanded: boolean;
   onToggle: () => void;
-  
 };
 
 export const RecipeCard: React.FC<RecipeCardProps> = ({
@@ -20,9 +19,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   recommendedKnife,
   imgUrl,
   isExpanded,
-  onToggle
-
-  
+  onToggle,
 }) => {
   const [isIngredientsExpanded, setIngredientsExpanded] = useState(false);
 

@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, json, LoaderFunction } from "@remix-run/node";
 import React, { useState } from "react";
 import { mongodb } from "~/lib/mongoDb.server";
-import { Knife } from "../home._index/types";
+import { Knife } from "../_app.home._index/types";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import logo from "~/Images/knifeEdgeLogo.png";
@@ -33,6 +33,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import Header from "~/components/Header";
+import { requireUser } from "~/session/guards.server";
 
 const schema = z.object({
   intent: z.literal("createKnife").default("createKnife"),
@@ -46,6 +48,7 @@ const resolver = zodResolver(schema);
 
 // Loader function to fetch all knives from the "knives" collection
 export const loader: LoaderFunction = async () => {
+  
   const knives = await mongodb
     .db("knifeEdgeRemix")
     .collection<Knife>("knives")
@@ -59,6 +62,7 @@ export const loader: LoaderFunction = async () => {
 
 // Action function to handle adding and removing knives from inventory
 export async function action({ request }: ActionFunctionArgs) {
+    await requireUser(request);
   const formData = await parseFormData<{
     intent: "removeFromInventory" | "createKnife";
     knifeId: string;
@@ -118,7 +122,7 @@ export const Page = () => {
   console.log(errors);
 
   return (
-    <>
+   
       <div className="min-h-screen w-full flex flex-col items-center p-6 ">
         <img
           src={logo}
@@ -234,7 +238,7 @@ export const Page = () => {
           </DialogContent>
         </Dialog>
       </div>
-    </>
+    
   );
 };
 

@@ -7,6 +7,7 @@ import { parseFormData } from "remix-hook-form";
 import { ObjectId } from "mongodb";
 
 export const loader = async () => {
+  
   const recipe = await mongodb
     .db("knifeEdgeRemix")
     .collection("recipe")
@@ -21,6 +22,7 @@ export const loader = async () => {
 
 
 export const Page = () => {
+  
   const { recipe } = useLoaderData<typeof loader>();
   return (
     <div className="flex items-center justify-center min-h-screen bg-black-100">

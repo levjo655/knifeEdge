@@ -2,7 +2,7 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import { Form, json, Link, redirect, useActionData } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { storeUserInSession } from "../session/session.server";
+import { storeUserInSession } from "~/session/session.server";
 import { createFormData, getValidatedFormData } from "remix-hook-form";
 import { mongodb } from "~/lib/mongoDb.server";
 import { User } from "~/types";
@@ -91,7 +91,7 @@ export default function RegisterRoute() {
         </Button>
         <p className="text-center text-gray-600 mt-4">
           Already have an account?{" "}
-          <Link to="/" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-500 hover:underline">
             Sign in here
           </Link>
         </p>
