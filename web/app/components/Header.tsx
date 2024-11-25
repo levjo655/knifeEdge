@@ -9,17 +9,14 @@ import {
 import logo from "../Images/knifeEdgeLogo.png";
 import { LoaderFunction } from "@remix-run/node";
 import logOut from "~/routes/_auth.logout/route";
+import { loader } from "~/routes/_app.home._index/route";
 
 const Header = () => {
   const Navigate = useNavigate();
+  // const { user } = useLoaderData<typeof loader>();
   return (
     <div className="flex w-full justify-between bg-slate-300">
-      <img
-        className="w-10 h-auto justify-start"
-        src={logo}
-        alt="knifeEdge logo"
-      />
-
+      <h1 className="flex align-top mr-1 p-4"></h1>
 
       <header className="header justify-between items-end py-4 px-8 ">
         <nav className="flex space-x-6 justify-end">

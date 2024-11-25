@@ -16,9 +16,8 @@ const Layout = () => {
 
   return (
     <div>
-      
       <Header />
-      <h1>Logged in </h1>{user.username}
+
       <Outlet />
     </div>
   );
