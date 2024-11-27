@@ -166,7 +166,7 @@ export const Page = () => {
                 <input type="hidden" name="knifeId" value={knife._id} />
                 <Button
                   type="submit"
-                  className="w-full text-white hover:bg-blue-100 rounded-lg py-2 text-sm"
+                  className="w-1/2 text-white hover:bg-gray-100 rounded-lg py-2 text-sm"
                 >
                   Delete Knife
                 </Button>
