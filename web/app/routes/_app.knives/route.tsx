@@ -207,7 +207,7 @@ export const Page = () => {
       </div>
 
       {/* Add Knife Button */}
-      <Dialog open={isOpen}>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
             onClick={() => {
