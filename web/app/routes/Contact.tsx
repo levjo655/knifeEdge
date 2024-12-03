@@ -13,7 +13,6 @@ import {
 import { useNavigate } from "@remix-run/react";
 
 export const Contact = () => {
-    
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -29,7 +28,7 @@ export const Contact = () => {
             <CardDescription></CardDescription>
           </CardHeader>
           <CardContent>
-            <p>Plz don't</p>
+            <p>Levjo Cibuku <br />Email: levjo.cibuku@hotmail.com <br />Tel: 070 84 85 534</p>
           </CardContent>
           <CardFooter>
             <p>© 2024 All rights reserved.</p>
