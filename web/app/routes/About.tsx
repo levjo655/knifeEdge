@@ -15,10 +15,10 @@ export const About = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       <img
-          src={logo}
-          alt="Knife Edge Logo"
-          className="w-32 h-32 mx-auto mb-4"
-        />
+        src={logo}
+        alt="Knife Edge Logo"
+        className="w-32 h-32 mx-auto mb-4"
+      />
       <div className="min-h-screen w-full flex items-center justify-center p-6">
         <Card className="max-w-md">
           <CardHeader>
@@ -41,7 +41,7 @@ export const About = () => {
             </p>
           </CardContent>
           <CardFooter>
-            <p>© 2024 All rights reserved.</p>
+            <p>© 2025 All rights reserved.</p>
           </CardFooter>
         </Card>
       </div>
