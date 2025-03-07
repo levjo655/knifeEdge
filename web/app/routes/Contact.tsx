@@ -31,7 +31,7 @@ export const Contact = () => {
             <p>Levjo Cibuku <br />Email: levjo.cibuku@hotmail.com <br />Tel: 070 84 85 534</p>
           </CardContent>
           <CardFooter>
-            <p>© 2024 All rights reserved.</p>
+            <p>© 2025 All rights reserved.</p>
           </CardFooter>
         </Card>
       </div>
