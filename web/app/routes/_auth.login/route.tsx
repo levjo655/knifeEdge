@@ -7,6 +7,9 @@ import { getValidatedFormData, useRemixForm } from "remix-hook-form";
 import { mongodb } from "~/lib/mongoDb.server";
 import { User } from "~/types";
 import { storeUserInSession } from "~/session/session.server";
+import logo from "~/Images/knifeEdgeLogo.png";
+import { Link } from "@remix-run/react/dist/components";
+
 
 const schema = z.object({
   email: z
@@ -77,58 +80,73 @@ export default function Index() {
   });
 
   return (
-    <><Header></Header><div className="flex flex-col h-full min-h-screen">
-          <main className="flex-auto justify-center align-middle">
-              {/* Form with handleSubmit */}
-              <form
-                  className="mx-auto max-w-md p-4"
-                  method="post"
-                  onSubmit={handleSubmit}
-              >
-                  {/* Email input */}
-                  <div className="mb-4">
-                      <label htmlFor="email" className="block mb-2">
-                          Email:
-                      </label>
-                      <input
-                          {...register("email")}
-                          id="email"
-                          type="email"
-                          placeholder="Enter your email"
-                          className="w-full p-2 border border-gray-300 rounded" />
-                      {formState.errors.email && (
-                          <p className="text-red-500">{formState.errors.email.message}</p>
-                      )}
-                  </div>
+    <>
+  <Header />
+  <div className="flex flex-col h-full min-h-screen">
+    <main className="flex-auto flex flex-col items-center justify-center">
+      <div className="mb-8 text-center">
+        <img src={logo} className="h-48 object-contain mx-auto" alt="Logo" />
+      </div>
+      {/* Form with handleSubmit */}
+      <form
+        className="mx-auto max-w-md p-4 w-full"
+        method="post"
+        onSubmit={handleSubmit}
+      >
+        {/* Email input */}
+        <div className="mb-4">
+          <label htmlFor="email" className="block mb-2">
+            Email:
+          </label>
+          <input
+            {...register("email")}
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+          {formState.errors.email && (
+            <p className="text-red-500">{formState.errors.email.message}</p>
+          )}
+        </div>
 
-                  {/* Password input */}
-                  <div className="mb-4">
-                      <label htmlFor="password" className="block mb-2">
-                          Password:
-                      </label>
-                      <input
-                          {...register("password")}
-                          id="password"
-                          type="password"
-                          placeholder="Enter your password"
-                          className="w-full p-2 border border-gray-300 rounded" />
-                      {formState.errors.password && (
-                          <p className="text-red-500">
-                              {formState.errors.password.message}
-                          </p>
-                      )}
-                  </div>
+        {/* Password input */}
+        <div className="mb-4">
+          <label htmlFor="password" className="block mb-2">
+            Password:
+          </label>
+          <input
+            {...register("password")}
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+          {formState.errors.password && (
+            <p className="text-red-500">
+              {formState.errors.password.message}
+            </p>
+          )}
+        </div>
 
-                  {/* Submit button */}
-                  <button
-                      type="submit"
-                      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                  >
-                      Submit
-                  </button>
-              </form>
-          </main>
-          <Footer />
-      </div></>
-  );
+        {/* Submit button */}
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 mb-4"
+        >
+          Submit
+        </button>
+
+        {/* Create account button */}
+        <div className="text-center">
+  <Link to="/Register" className="text-blue-500 hover:text-blue-700">
+    Don't have an account? Create one here
+  </Link>
+</div>
+      </form>
+    </main>
+    <Footer />
+  </div>
+</>
+  )
 }
